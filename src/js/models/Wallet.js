@@ -1,10 +1,51 @@
+
+var OpType = {
+    OUT: 'OUT',
+    IN: 'IN'
+}
+
+function isValidOperation(op) {
+    return op && op.description && parseFloat(op.amount) > 0 && typeof OpType[op.type] !== 'undefined';
+}
+
+var WalletErrors = {
+    INVALID_OPERATION: 'INVALID_OPERATION'
+}
+
 function Wallet() {
     var balance = 0;
     var operations = [];
-
-    this.addOperation = function() {
-
+    function saveWallet() {
+        localStorage.setItem('wallet', JSON.stringify({balance: balance, operations: operations}));
     }
+
+    function init() {
+        var wallet = getWallet();
+        balance = wallet.balance;
+        operations = wallet.operations;
+    }
+    
+
+    this.addOperation = function(op) {
+        if(!isValidOperation(op)) {
+            throw new Error(WalletErrors.INVALID_OPERATION);
+        }
+        var operation = {
+            amount: parseFloat(op.amount),
+            description: op.description,
+            type: op.type,
+            date: new Date().getTime()
+        }
+        if(op.type === OpType.IN) {
+            balance += operation.amount;
+        } else if(op.type === OpType.OUT) {
+            balance -= operation.amount;
+        }
+        operations.push(operation);
+        saveWallet();
+        }
+
+
 
     this.removeOperation = function() {
         
@@ -15,10 +56,28 @@ function Wallet() {
     }
 
     this.getBalance = function() {
-        
+        return balance;
     }
 
-    this.getOperation = function() {
-        
+    this.getOperations = function() {
+        return operations;
     }
+
+    init();
+}
+    
+
+
+
+  
+
+    function getWallet() {
+        var wallet = localStorage.getItem('wallet');
+        if(!wallet) {
+            return {
+                balance: 0,
+                operations: []
+            }
+        }
+        return JSON.parse(wallet);
 }
