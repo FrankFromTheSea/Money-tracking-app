@@ -3,7 +3,7 @@
     function addOperation() {
 
     }
-    function remoOveperation() {
+    function removeOperation() {
         
     }
     function findOperation() {
