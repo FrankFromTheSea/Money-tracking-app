@@ -1,4 +1,4 @@
-// (function() {
+(function() {
     var wallet;
     function addOperation(op) {
         wallet.addOperation(op);
@@ -20,4 +20,4 @@
         wallet = new Wallet();
     })
 
-// })();
+})();
