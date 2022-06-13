@@ -3,10 +3,10 @@
     function addOperation() {
 
     }
-    function removeperation() {
+    function remoOveperation() {
         
     }
-    function findperation() {
+    function findOperation() {
         
     }
     function getBalance() {
